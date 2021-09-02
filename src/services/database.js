@@ -21,11 +21,10 @@ const getUsers= async(req, res) =>{
 }
 
 const userLogin= async(req, res) =>{
-    
     try{
-       let sql= `INSERT INTO users (name, email, tokenID) VALUES ($1, $2, $3)`
-        // const insertUser= ['req.body.nome', 'req.body.email', 'req.body.token']
-       const insertUser= [`${req.body.name}`, `${req.body.email}`, `${req.body.tokenID}`]
+       let sql= `INSERT INTO users (name, email, tokenID, password) VALUES ($1, $2, $3,$4)`
+       const insertUser= [`${req.body.name}`, `${req.body.email}`, `${req.body.tokenID}`, `${req.body.password}`]
+
        const insert= await pool.query(sql, insertUser)
        res.json(insert.rows)
     }catch(error){

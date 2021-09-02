@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 8088; 
 const cors = require('cors');
-const urlRouter= require('./routers/router.js')
+const endpoint = require('./routers/router.js')
 
 // middleware
 app.use(cors())
@@ -10,9 +10,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 
 // router app
-app.use('/', urlRouter)
-app.use('/', urlRouter)
-
+app.use('/users', endpoint)
 
 // LIFT SERVER
 app.listen(port,(err)=>{
