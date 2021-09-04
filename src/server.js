@@ -9,7 +9,7 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 
-// router app
+// router app  https://localhost:8088/user/endpoint 
 app.use('/users', endpoint)
 
 // LIFT SERVER
