@@ -8,7 +8,7 @@
 
 * Node
 * Express
-* PostgresSQL
+* PostgreSQL
 * Json Web Token 
 
 ## Project description
