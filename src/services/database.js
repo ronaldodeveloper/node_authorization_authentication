@@ -9,7 +9,6 @@ const pool = new Pool({
     port: process.env.DB_PORT ,
     database: process.env.DB_DATABASE ,
 })
-// pool.connect()
 
 
 // exibe todos os usuarios
@@ -45,36 +44,36 @@ const register= async(req, res) =>{
 
 // login do usuario
 const login= async(req, res) =>{
-    //   const {email, password} = req.body
-    //   res.json({email, password})
 
         let sql= `SELECT * FROM users WHERE email= '${req.body.email}'`
         const Users= await pool.query(sql)
         if(Users){
             const {email}= Users.rows[0]
-            const token= jwt.sign({ email }, process.env.SECRET_KEY, {expiresIn: '1d'})
-           res.json({token}) 
+            const token= jwt.sign({email}, process.env.SECRET_KEY, {expiresIn: '1d'})
+            res.json({token}) 
         }else{
-            res.status(403).json({"message": "register user!"})  
+            res.status(401).json({"message": "register user!"})  
         }  
 }
 
 
-
 // Rota privada, depende de autorização para ser acessada
 const dashboard = async (req, res) => {
-    res.send(req.email)
+
+    let sql= `SELECT * FROM users WHERE email= '${req.email}'`
+    const Users= await pool.query(sql)
+    res.json(Users.rows)
 }
 
 // middleware
 const verifyToken= (req, res, next) => {
     const token = req.headers.authorization
     if (!token){
-        res.status(403).send('Autorization failed!')
+        res.status(401).send('Autorization Required!')
     }
 
     jwt.verify(token, process.env.SECRET_KEY, (err, auth)=>{
-         if(err){ return res.status(401).end()}
+         if(err){ return res.status(401).send({message: `No Token Provided!`})}
 
          req.email = auth.email;
          next()
